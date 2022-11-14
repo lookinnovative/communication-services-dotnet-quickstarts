@@ -12,8 +12,8 @@ class Program
           {
                // You can find your endpoint and access key from your resource in the Azure portal
                // e.g. "https://<RESOURCE_NAME>.communication.azure.com";
-               Uri endpoint = new("https://verizann-media.communication.azure.com/");
-        string conString = "endpoint=https://verizann-media.communication.azure.com/;accesskey=EQHWAYFO9E0NNcj8OZEFHcVtFWUa1EBEV4tsgX1ej53kJjv4v9ZgBLVotnwhKRtjTxdIf2UEq4xoJ5n/on5IYA==";
+               //Uri endpoint = new("https://verizann-media.communication.azure.com/");
+               string conString = "endpoint=https://verizann-media.communication.azure.com/;accesskey=EQHWAYFO9E0NNcj8OZEFHcVtFWUa1EBEV4tsgX1ej53kJjv4v9ZgBLVotnwhKRtjTxdIf2UEq4xoJ5n/on5IYA==";
                // We need an instance of the program class to use within this method.
                Program instance = new();
 
@@ -24,7 +24,7 @@ class Program
                Console.WriteLine("Sending SMS using Service Principals");
 
                // You will need a phone number from your resource to send an SMS.
-               SmsSendResult result = instance.SendSms(endpoint, "+18772178780", "+14048386995", "Hello from Service Principals");
+               SmsSendResult result = instance.SendSms(conString, "+18772178780", "+14048386995", "Hello from Service Principals");
                Console.WriteLine($"Sms id: {result.MessageId}");
                Console.WriteLine($"Send Result Successful: {result.Successful}");
           }
@@ -38,9 +38,9 @@ class Program
 
                return tokenResponse;
           }
-          public SmsSendResult SendSms(Uri resourceEndpoint, string from, string to, string message)
+          public SmsSendResult SendSms(string conString, string from, string to, string message)
           {
-               SmsClient smsClient = new SmsClient(resourceEndpoint, this.credential);
+               SmsClient smsClient = new SmsClient(conString);
                SmsSendResult sendResult = smsClient.Send(
                     from: from,
                     to: to,

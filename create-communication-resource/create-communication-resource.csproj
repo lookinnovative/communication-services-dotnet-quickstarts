@@ -13,7 +13,7 @@
     <LangVersion>latestmajor</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Azure.Identity" Version="1.4.1" />
+    <PackageReference Include="Azure.Identity" Version="1.8.0" />
     <PackageReference Include="Azure.ResourceManager.Communication" Version="1.0.0" />
   </ItemGroup>
 
