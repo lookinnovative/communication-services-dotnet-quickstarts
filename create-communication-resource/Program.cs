@@ -33,7 +33,7 @@ namespace CreateCommunicationResource
 
 
             var resourceGroupName = "Verizann_Media_Services";
-            var resourceName = "lookRes";
+            var resourceName = "TempComu";
             var resource = new CommunicationServiceResource { Location = "Global", DataLocation = "UnitedStates" };
             var operation = await communicationServiceClient.CommunicationService.StartCreateOrUpdateAsync(resourceGroupName, resourceName, resource);
             await operation.WaitForCompletionAsync();
