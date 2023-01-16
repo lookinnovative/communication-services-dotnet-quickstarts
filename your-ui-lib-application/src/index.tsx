@@ -1,16 +1,16 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
 
-const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
-);
-root.render(
-  <React.StrictMode>
+import React from 'react';
+import ReactDOM from 'react-dom';
+import './index.css';
+import { App } from './App.snippet'; // this should point to your App.tsx file
+
+ReactDOM.render(
+  <div className="wrapper">
     <App />
-  </React.StrictMode>
+  </div>,
+  document.getElementById('root')
 );
 
 // If you want to start measuring performance in your app, pass a function
