@@ -144,7 +144,7 @@ import {
   useAzureCommunicationCallAdapter,
   useAzureCommunicationChatAdapter
 } from '@azure/communication-react';
-import React, { CSSProperties, useEffect, useMemo, useRef, useState } from 'react';
+import React, { CSSProperties, useEffect, useMemo, useRef, useState };
 import { v4 as uuidv4 } from 'uuid';
 
 /**
