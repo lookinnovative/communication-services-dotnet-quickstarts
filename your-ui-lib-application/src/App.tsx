@@ -1,4 +1,12 @@
-import React from 'react';
+import { ChatClient } from '@azure/communication-chat';
+import { AzureCommunicationTokenCredential, CommunicationUserIdentifier } from '@azure/communication-common';
+import {
+  fromFlatCommunicationIdentifier,
+  useAzureCommunicationCallAdapter,
+  useAzureCommunicationChatAdapter
+} from '@azure/communication-react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 import logo from './logo.svg';
 import './App.css';
 
