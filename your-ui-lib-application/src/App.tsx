@@ -9,6 +9,9 @@ import {
 } from '@azure/communication-react';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
+const ENDPOINT_URL = '<Azure Communication Services Resource Endpoint>';
+const USER_ID = '<Azure Communication Services Identifier>';
+const TOKEN = '<Azure Communication Services Access Token>';
 
 function App() {
   return (
