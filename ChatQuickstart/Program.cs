@@ -7,7 +7,7 @@ namespace ChatQuickstart
 {
     class Program
     {
-        static vooid Main(string[] args)
+        static async System.Threading.Tasks.Task Main(string[] args)
         {
             // Your unique Azure Communication service endpoint
             Uri endpoint = new Uri("https://verizann-media.communication.azure.com");
