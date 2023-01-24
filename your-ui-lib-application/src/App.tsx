@@ -97,16 +97,7 @@ function App(): JSX.Element {
   const chatAdapter = useAzureCommunicationChatAdapter(chatAdapterArgs);
 
   if (!!callAdapter && !!chatAdapter) {
-    return (
-      <div style={{ height: '100vh', display: 'flex' }}>
-        <div style={containerStyle}>
-          <ChatComposite adapter={chatAdapter} />
-        </div>
-        <div style={containerStyle}>
-          <CallComposite adapter={callAdapter} />
-        </div>
-      </div>
-    );
+    return <h1>Hooray! You set up adapters 🎉🎉🎉</h1>;      
   }
   if (credential === undefined) {
     return (
