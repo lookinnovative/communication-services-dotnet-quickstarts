@@ -3,8 +3,6 @@ import {
   CommunicationUserIdentifier,
 } from '@azure/communication-common';
 import {
-  CallComposite,
-  ChatComposite,
   fromFlatCommunicationIdentifier,
   useAzureCommunicationCallAdapter,
   useAzureCommunicationChatAdapter,
@@ -107,11 +105,6 @@ function App(): JSX.Element {
   return <h3>Initializing...</h3>;
 }
 
-const containerStyle: CSSProperties = {
-  border: 'solid 0.125rem olive',
-  margin: '0.5rem',
-  width: '50vw',
-};
 /**
  * This hook returns all the arguments required to use the Azure Communication services
  * that would be provided by your backend service after user authentication
