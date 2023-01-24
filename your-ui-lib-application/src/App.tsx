@@ -8,7 +8,6 @@ import {
   useAzureCommunicationChatAdapter,
 } from '@azure/communication-react';
 import React, {
-  CSSProperties,
   useEffect,
   useMemo,
   useRef,
