@@ -30,9 +30,9 @@ import { initializeIcons } from '@fluentui/react';
  * In a real application, your backend service would provide these to the client
  * application after the user goes through your authentication flow.
  */
-const ENDPOINT_URL   = 'https://verizann-media.communication.azure.com';
-const USER_ID = '8:acs:529c7b72-7c34-4ddb-9e78-1318bebc1e4d_00000016-8e33-602f-740a-113a0d00a54b';
-const TOKEN = 'eyJhbGciOiJSUzI1NiIsImtpZCI6IjEwNiIsIng1dCI6Im9QMWFxQnlfR3hZU3pSaXhuQ25zdE5PU2p2cyIsInR5cCI6IkpXVCJ9.eyJza3lwZWlkIjoiYWNzOjUyOWM3YjcyLTdjMzQtNGRkYi05ZTc4LTEzMThiZWJjMWU0ZF8wMDAwMDAxNi04ZTMzLTYwMmYtNzQwYS0xMTNhMGQwMGE1NGIiLCJzY3AiOjE3OTIsImNzaSI6IjE2NzQ3NDA2MTIiLCJleHAiOjE2NzQ4MjcwMTIsInJnbiI6ImFtZXIiLCJhY3NTY29wZSI6ImNoYXQsdm9pcCIsInJlc291cmNlSWQiOiI1MjljN2I3Mi03YzM0LTRkZGItOWU3OC0xMzE4YmViYzFlNGQiLCJyZXNvdXJjZUxvY2F0aW9uIjoidW5pdGVkc3RhdGVzIiwiaWF0IjoxNjc0NzQwNjEyfQ.J4tCeoyp4DFWYiry38eKnOYeDgiylnsJ9XXsFlA0b8wTxzIdLZHS-UrAjBIeH-3TpaYfP4WQQIG7sb9SYtKx-yohrRriNOWkiS6iwtQT6-hbKfn1ew6DpwSBZgHCeO_fJVZ2Vct_sN5v42NHtAfagYV6aJaLovPjp-RGQ8-F1P2XS3dgPojv7po-Nx-OUbQK7lc8nI2EF--xroGZ9kpuAxlUkah4rVHKhRbCufjj7jAQyRcAAD_rKpQo2I_DoCwoKWMIk05GYFb0HuE-xmcT8SlF9BxMSsA9Iv8Q65WyUtVaotVvCw1-rbXuHZzXXqDU7dPzOjYvj0aybrrJrtnmBQ';
+const ENDPOINT_URL = '<Azure Communication Services Resource Endpoint>';
+const USER_ID = '<Azure Communication Services Identifier>';
+const TOKEN = '<Azure Communication Services Access Token>';
 
 /**
  * Display name for the local participant.
@@ -40,7 +40,7 @@ const TOKEN = 'eyJhbGciOiJSUzI1NiIsImtpZCI6IjEwNiIsIng1dCI6Im9QMWFxQnlfR3hZU3pSa
  * backend services provides to the client application after the user
  * goes through your authentication flow.
  */
-const DISPLAY_NAME = '<Test>';
+const DISPLAY_NAME = '<Display Name>';
 
 initializeIcons();
 
@@ -97,15 +97,17 @@ function App(): JSX.Element {
   const chatAdapter = useAzureCommunicationChatAdapter(chatAdapterArgs);
 
   if (!!callAdapter && !!chatAdapter) {
-    return  <div style={{ height: '100vh', display: 'flex' }}>
-    <div style={containerStyle}>
-      <ChatComposite adapter={chatAdapter} />
-    </div>
-    <div style={containerStyle}>
-      <CallComposite adapter={callAdapter} />
-    </div>
-  </div>;
-     }
+    return (
+      <div style={{ height: '100vh', display: 'flex' }}>
+        <div style={containerStyle}>
+          <ChatComposite adapter={chatAdapter} />
+        </div>
+        <div style={containerStyle}>
+          <CallComposite adapter={callAdapter} />
+        </div>
+      </div>
+    );
+  }
   if (credential === undefined) {
     return (
       <h3>Failed to construct credential. Provided token is malformed.</h3>
@@ -172,4 +174,3 @@ function useAzureCommunicationServiceArgs(): {
 }
 
 export default App;
-
