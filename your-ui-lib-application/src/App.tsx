@@ -30,9 +30,9 @@ import { initializeIcons } from '@fluentui/react';
  * In a real application, your backend service would provide these to the client
  * application after the user goes through your authentication flow.
  */
-const ENDPOINT_URL = '<Azure Communication Services Resource Endpoint>';
-const USER_ID = '<Azure Communication Services Identifier>';
-const TOKEN = '<Azure Communication Services Access Token>';
+const ENDPOINT_URL = 'https://verizann-media.communication.azure.com';
+const USER_ID = '8:acs:529c7b72-7c34-4ddb-9e78-1318bebc1e4d_00000017-15f4-2bd8-3ef0-8b3a0d00a5a1';
+const TOKEN = 'eyJhbGciOiJSUzI1NiIsImtpZCI6IjEwNiIsIng1dCI6Im9QMWFxQnlfR3hZU3pSaXhuQ25zdE5PU2p2cyIsInR5cCI6IkpXVCJ9.eyJza3lwZWlkIjoiYWNzOjUyOWM3YjcyLTdjMzQtNGRkYi05ZTc4LTEzMThiZWJjMWU0ZF8wMDAwMDAxNy0xNWY0LTJiZDgtM2VmMC04YjNhMGQwMGE1YTEiLCJzY3AiOjE3OTIsImNzaSI6IjE2NzcwMTgxNzEiLCJleHAiOjE2NzcxMDQ1NzEsInJnbiI6ImFtZXIiLCJhY3NTY29wZSI6ImNoYXQsdm9pcCIsInJlc291cmNlSWQiOiI1MjljN2I3Mi03YzM0LTRkZGItOWU3OC0xMzE4YmViYzFlNGQiLCJyZXNvdXJjZUxvY2F0aW9uIjoidW5pdGVkc3RhdGVzIiwiaWF0IjoxNjc3MDE4MTcxfQ.oh1p70NOqpYAhyLVsmCXARCPOx2Y01c8MUbL2EQwZkEQGBcLicvtmj2zXceKrGjYvdRfk4wnKsYR96fxQctvgV6A-sMk-uOYjFs4Ulx04B3FNMhpalJ3GUQ0sGMWsbcDOUuaA96fWu3WzUU9WlPrk2IiDlVrK2UkxrSjLxzlAwqnRWxqryKijtGON5FIR_D1NxrUqvmYOeV64lPtLzA5KXNc_a9GasypZLFk54N-RalH-UtZExbuIxfos08xp9X4h4E4RgvLcWZqaHIxLjC9YfT2zszHr-U07cp4owoLIUiF6BNnbzHC3Zp_nH1yappGBqePnPtAzY4z71YJuRKZ5g';
 
 /**
  * Display name for the local participant.
