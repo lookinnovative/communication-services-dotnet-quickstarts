@@ -22,9 +22,17 @@ import { ChatClient } from '@azure/communication-chat';
 import { initializeIcons, registerIcons, Stack } from '@fluentui/react';
 import { CallingComponents } from './CallingComponents';
 import { ChatComponents } from './ChatComponents';
-import {
-  DEFAULT_COMPONENT_ICONS
-} from '@azure/communication-react';
+import { VideoGallery } from '@azure/communication-react';
+import { DEFAULT_COMPONENT_ICONS } from '@azure/communication-react';
+import { VideoTile } from '@azure/communication-react';
+import { GridLayout, } from '@azure/communication-react';
+import { ControlBar } from '@azure/communication-react';
+import { DefaultButton } from '@fluentui/react';
+import { ControlBarButton } from '@azure/communication-react';
+import { DevicesButton } from '@azure/communication-react';
+import { EndCallButton } from '@azure/communication-react';
+import { MicrophoneButton } from '@azure/communication-react';
+import { ParticipantsButton } from '@azure/communication-react';
 
 /**
  * Authentication information needed for your client application to use
@@ -59,6 +67,27 @@ function App(): JSX.Element {
   // This will ensure that all the icons are rendered correctly.
   initializeIcons();
   registerIcons({ icons: DEFAULT_COMPONENT_ICONS });
+
+  function CompletedComponentsApp(): JSX.Element {
+    const stackStyle = {
+      root: {
+        width: '100%'
+      }
+    };
+  
+    initializeIcons();
+    registerIcons({ icons: DEFAULT_COMPONENT_ICONS });
+  
+    return (
+      <FluentThemeProvider>
+        <Stack horizontal horizontalAlign="space-evenly" styles={stackStyle}>
+          <CallingComponents />
+          <ChatComponents />
+        </Stack>
+      </FluentThemeProvider>
+    );
+  }
+  
 
   
   
