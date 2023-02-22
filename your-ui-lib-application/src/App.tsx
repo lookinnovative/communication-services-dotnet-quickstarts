@@ -8,7 +8,7 @@ import {
   fromFlatCommunicationIdentifier,
   useAzureCommunicationCallAdapter,
   useAzureCommunicationChatAdapter,
-  FluentThemeProvider, DEFAULT_COMPONENT_ICONS,
+  FluentThemeProvider, 
 } from '@azure/communication-react';
 import React, {
   CSSProperties,
@@ -22,6 +22,9 @@ import { ChatClient } from '@azure/communication-chat';
 import { initializeIcons, registerIcons, Stack } from '@fluentui/react';
 import { CallingComponents } from './CallingComponents';
 import { ChatComponents } from './ChatComponents';
+import {
+  DEFAULT_COMPONENT_ICONS
+} from '@azure/communication-react';
 
 /**
  * Authentication information needed for your client application to use
