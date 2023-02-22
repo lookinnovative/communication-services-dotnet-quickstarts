@@ -8,6 +8,7 @@ import {
   fromFlatCommunicationIdentifier,
   useAzureCommunicationCallAdapter,
   useAzureCommunicationChatAdapter,
+  FluentThemeProvider, DEFAULT_COMPONENT_ICONS,
 } from '@azure/communication-react';
 import React, {
   CSSProperties,
@@ -18,7 +19,9 @@ import React, {
 } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { ChatClient } from '@azure/communication-chat';
-import { initializeIcons } from '@fluentui/react';
+import { initializeIcons, registerIcons, Stack } from '@fluentui/react';
+import { CallingComponents } from './CallingComponents';
+import { ChatComponents } from './ChatComponents';
 
 /**
  * Authentication information needed for your client application to use
@@ -47,7 +50,15 @@ initializeIcons();
 /**
  * Entry point of your application.
  */
+
 function App(): JSX.Element {
+  // If you don't want to provide custom icons, you can register the default ones included with the library.
+  // This will ensure that all the icons are rendered correctly.
+  initializeIcons();
+  registerIcons({ icons: DEFAULT_COMPONENT_ICONS });
+
+  
+  
   // Arguments that would usually be provided by your backend service or
   // (indirectly) by the user.
   const { endpointUrl, userId, token, displayName, groupId, threadId } =
@@ -170,7 +181,8 @@ function useAzureCommunicationServiceArgs(): {
     displayName: DISPLAY_NAME,
     groupId: groupId.current,
     threadId,
-  };
+      };
+      
 }
 
 export default App;
