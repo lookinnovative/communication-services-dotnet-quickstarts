@@ -33,6 +33,13 @@ import { DevicesButton } from '@azure/communication-react';
 import { EndCallButton } from '@azure/communication-react';
 import { MicrophoneButton } from '@azure/communication-react';
 import { ParticipantsButton } from '@azure/communication-react';
+import {  CallParticipantListParticipant, } from '@azure/communication-react';
+import { IContextualMenuProps } from '@fluentui/react';
+import { CameraButton } from '@azure/communication-react';
+import { ScreenShareButton } from '@azure/communication-react';
+import { Airplane20Filled, VehicleShip20Filled } from '@fluentui/react-icons';
+import { MessageThread } from '@azure/communication-react';
+import { GetHistoryChatMessages } from './placeholdermessages';
 
 /**
  * Authentication information needed for your client application to use
@@ -57,6 +64,245 @@ const TOKEN = 'eyJhbGciOiJSUzI1NiIsImtpZCI6IjEwNiIsIng1dCI6Im9QMWFxQnlfR3hZU3pSa
 const DISPLAY_NAME = '<Display Name>';
 
 initializeIcons();
+
+const MockLocalParticipant = {
+  userId: 'user1',
+  displayName: 'You',
+  state: 'Connected',
+  isMuted: true
+};
+
+const MockRemoteParticipants = [
+  {
+    userId: 'user2',
+    displayName: 'Peter Parker'
+  },
+  {
+    userId: 'user3',
+    displayName: 'Thor'
+  },
+  {
+    userId: 'user4',
+    displayName: 'Matthew Murdock'
+  },
+  {
+    userId: 'user5',
+    displayName: 'Bruce Wayne'
+  }
+];
+
+// This must be the only named export from this module, and must be named to match the storybook path suffix.
+// This ensures that storybook hoists the story instead of creating a folder with a single entry.
+export const FloatingLocalVideoExample: () => JSX.Element = () => {
+  const containerStyle = { height: '50vh' };
+  return (
+    <Stack style={containerStyle}>
+      <VideoGallery
+        layout="floatingLocalVideo"
+        localParticipant={MockLocalParticipant}
+        remoteParticipants={MockRemoteParticipants}
+      />
+    </Stack>
+  );
+};
+
+export const VideoTileExample: () => JSX.Element = () => {
+  const videoTileStyles = { root: { height: '300px', width: '400px', border: '1px solid #999' } };
+
+  return (
+    <FluentThemeProvider>
+      <VideoTile
+        styles={videoTileStyles}
+        displayName={'Maximus Aurelius'}
+        showMuteIndicator={true}
+        isMuted={true}
+        renderElement={null}
+        isMirrored={true}
+      />
+    </FluentThemeProvider>
+  );
+};
+
+export const GridLayoutExample = (): JSX.Element => {
+  const videoTileStyles = { root: { padding: '10px', border: '1px solid #999' } };
+  return (
+    <div style={{ height: '530px', width: '830px' }}>
+      <GridLayout>
+        <VideoTile styles={videoTileStyles} displayName={'Michael'} />
+        <VideoTile styles={videoTileStyles} displayName={'Jim'} />
+        <VideoTile styles={videoTileStyles} displayName={'Pam'} />
+        <VideoTile styles={videoTileStyles} displayName={'Dwight'} />
+      </GridLayout>
+    </div>
+  );
+};
+
+const mockParticipants: CallParticipantListParticipant[] = [
+  {
+    userId: 'user1',
+    displayName: 'You',
+    state: 'Connected',
+    isMuted: true,
+    isScreenSharing: false,
+    isRemovable: true
+  },
+  {
+    userId: 'user2',
+    displayName: 'Hal Jordan',
+    state: 'Connected',
+    isMuted: true,
+    isScreenSharing: true,
+    isRemovable: true
+  },
+  {
+    userId: 'user3',
+    displayName: 'Barry Allen',
+    state: 'Idle',
+    isMuted: false,
+    isScreenSharing: false,
+    isRemovable: true
+  },
+  {
+    userId: 'user4',
+    displayName: 'Bruce Wayne',
+    state: 'Connecting',
+    isMuted: false,
+    isScreenSharing: false,
+    isRemovable: false
+  }
+];
+
+export const AllButtonsControlBarExample: () => JSX.Element = () => {
+  const exampleOptionsMenuProps: IContextualMenuProps = {
+    items: [
+      {
+        key: '1',
+        name: 'Choose Camera',
+        iconProps: { iconName: 'LocationCircle' },
+        onClick: () => alert('Choose Camera Menu Item Clicked!')
+      }
+    ]
+  };
+  const onMuteAll = (): void => {
+    // your implementation to mute all participants
+  };
+
+  return (
+    <FluentThemeProvider>
+      <ControlBar layout={'horizontal'}>
+        <CameraButton
+          onClick={() => {
+            /*handle onClick*/
+          }}
+        />
+        <MicrophoneButton
+          onClick={() => {
+            /*handle onClick*/
+          }}
+        />
+        <ScreenShareButton
+          onClick={() => {
+            /*handle onClick*/
+          }}
+        />
+        <ParticipantsButton
+          participants={mockParticipants}
+          myUserId={'user1'}
+          callInvitationURL={'URL to copy'}
+          onMuteAll={onMuteAll}
+        />
+        <DevicesButton menuProps={exampleOptionsMenuProps} />
+        <EndCallButton
+          onClick={() => {
+            /*handle onClick*/
+          }}
+        />
+      </ControlBar>
+    </FluentThemeProvider>
+  );
+};
+
+export const ControlBarButtonWithLabelExample: () => JSX.Element = () => {
+  return (
+    <FluentThemeProvider>
+      <ControlBarButton
+        key={'btn1'}
+        onRenderIcon={() => <Airplane20Filled key={'airplaneIconKey'} primaryFill="currentColor" />}
+        strings={{ label: 'airplane' }}
+        labelKey={'airplaneButtonLabel'}
+        showLabel={true}
+      />
+      <ControlBarButton
+        key={'btn1'}
+        onRenderIcon={() => <VehicleShip20Filled key={'shipIconKey'} primaryFill="currentColor" />}
+        strings={{ label: 'ship' }}
+        labelKey={'shipButtonLabel'}
+        showLabel={true}
+      />
+    </FluentThemeProvider>
+  );
+};
+
+const exampleOptionsMenuProps: IContextualMenuProps = {
+  items: [
+    {
+      key: '1',
+      name: 'Choose Camera',
+      iconProps: { iconName: 'LocationCircle' },
+      onClick: () => alert('Choose Camera Menu Item Clicked!')
+    }
+  ]
+};
+
+export const DevicesButtonWithLabelExample: () => JSX.Element = () => {
+  return (
+    <FluentThemeProvider>
+      <DevicesButton showLabel={true} menuProps={exampleOptionsMenuProps} />
+    </FluentThemeProvider>
+  );
+};
+
+export const EndCallButtonWithLabelExample: () => JSX.Element = () => {
+  return (
+    <FluentThemeProvider>
+      <EndCallButton showLabel={true} />
+    </FluentThemeProvider>
+  );
+};
+
+export const MicrophoneButtonWithLabelExample: () => JSX.Element = () => {
+  return (
+    <FluentThemeProvider>
+      <MicrophoneButton showLabel={true} checked={true} />
+    </FluentThemeProvider>
+  );
+};
+
+export const ParticipantsButtonWithLabelExample: () => JSX.Element = () => {
+  return (
+    <FluentThemeProvider>
+      <ParticipantsButton showLabel={true} participants={mockParticipants} />
+    </FluentThemeProvider>
+  );
+};
+
+export const ScreenShareButtonWithLabelExample: () => JSX.Element = () => {
+  return (
+    <FluentThemeProvider>
+      <ScreenShareButton showLabel={true} checked={true} />
+    </FluentThemeProvider>
+  );
+};
+
+export const DefaultMessageThreadExample: () => JSX.Element = () => {
+  return (
+    <FluentThemeProvider>
+      <MessageThread userId={'1'} messages={GetHistoryChatMessages()} />
+    </FluentThemeProvider>
+  );
+};
+
+
 
 /**
  * Entry point of your application.
