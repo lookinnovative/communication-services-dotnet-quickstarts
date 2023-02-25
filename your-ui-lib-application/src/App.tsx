@@ -27,19 +27,42 @@ import { DEFAULT_COMPONENT_ICONS } from '@azure/communication-react';
 import { VideoTile } from '@azure/communication-react';
 import { GridLayout, } from '@azure/communication-react';
 import { ControlBar } from '@azure/communication-react';
-import { DefaultButton } from '@fluentui/react';
 import { ControlBarButton } from '@azure/communication-react';
 import { DevicesButton } from '@azure/communication-react';
 import { EndCallButton } from '@azure/communication-react';
 import { MicrophoneButton } from '@azure/communication-react';
 import { ParticipantsButton } from '@azure/communication-react';
-import {  CallParticipantListParticipant, } from '@azure/communication-react';
+import { CallParticipantListParticipant, } from '@azure/communication-react';
 import { IContextualMenuProps } from '@fluentui/react';
 import { CameraButton } from '@azure/communication-react';
 import { ScreenShareButton } from '@azure/communication-react';
 import { Airplane20Filled, VehicleShip20Filled } from '@fluentui/react-icons';
 import { MessageThread } from '@azure/communication-react';
 import { GetHistoryChatMessages } from './placeholdermessages';
+import { GroupCallLocator } from '@azure/communication-calling';
+import { ChatParticipant } from '@azure/communication-chat';
+import { v1 as createGUID } from 'uuid';
+import { TeamsMeetingLinkLocator } from '@azure/communication-calling';
+import {
+  CallAndChatLocator,
+  CallWithChatComposite,
+  useAzureCommunicationCallWithChatAdapter,
+  CallWithChatCompositeOptions
+} from '@azure/communication-react';
+import { Theme, PartialTheme, Spinner } from '@fluentui/react';
+import {
+  CallAdapterLocator,
+  CallCompositeOptions,
+  CompositeLocale,
+  } from '@azure/communication-react';
+import { validate as validateUUID } from 'uuid';
+import {
+  AvatarPersonaData,
+  CallAdapter,
+  ParticipantMenuItemsCallback,
+  } from '@azure/communication-react';
+  import { IContextualMenuItem, } from '@fluentui/react';
+  
 
 /**
  * Authentication information needed for your client application to use
@@ -90,6 +113,20 @@ const MockRemoteParticipants = [
     displayName: 'Bruce Wayne'
   }
 ];
+
+const isTeamsMeetingLink = (link: string): boolean => link.startsWith('https://teams.microsoft.com/l/meetup-join');
+const isGroupID = (id: string): boolean => validateUUID(id);
+const isRoomID = (id: string): boolean => {
+  const num = Number(id);
+
+  if (Number.isInteger(num) && num > 0) {
+    return true;
+  }
+
+  return false;
+};
+
+
 
 // This must be the only named export from this module, and must be named to match the storybook path suffix.
 // This ensures that storybook hoists the story instead of creating a folder with a single entry.
@@ -302,11 +339,183 @@ export const DefaultMessageThreadExample: () => JSX.Element = () => {
   );
 };
 
+const createNewChatThread = async (chatClient: ChatClient, participants: ChatParticipant[]): Promise<string> => {
+  const chatThreadResponse = await chatClient.createChatThread(
+    { topic: 'Meeting with a friendly bot' },
+    { participants }
+  );
+  if (chatThreadResponse.invalidParticipants && chatThreadResponse.invalidParticipants.length > 0) {
+    throw 'Server could not add participants to the chat thread';
+  }
+
+  const chatThread = chatThreadResponse.chatThread;
+  if (!chatThread || !chatThread.id) {
+    throw 'Server could not create chat thread';
+  }
+
+  return chatThread.id;
+};
+
+export const createCallWithChat = async (
+  token: string,
+  userId: string,
+  endpointUrl: string,
+  displayName: string
+): Promise<{ callLocator: GroupCallLocator; chatThreadId: string }> => {
+  const locator = { groupId: createGUID() };
+  const chatClient = new ChatClient(endpointUrl, new AzureCommunicationTokenCredential(token));
+  const threadId = await createNewChatThread(chatClient, [
+    { id: { communicationUserId: userId }, displayName: displayName }
+  ]);
+
+  return {
+    callLocator: locator,
+    chatThreadId: threadId
+  };
+};
+
+export type CallWithChatExampleProps = {
+  // Props needed for the construction of the CallWithChatAdapter
+  userId: CommunicationUserIdentifier;
+  token: string;
+  displayName: string;
+  endpointUrl: string;
+  /**
+   * For CallWithChat you need to provide either a teams meeting locator or a CallAndChat locator
+   * for the composite
+   *
+   * CallAndChatLocator: This locator is comprised of a groupId call locator and a chat thread
+   * threadId for the session. See documentation on the {@link CallAndChatLocator} to see types of calls supported.
+   * {callLocator: ..., threadId: ...}
+   *
+   * TeamsMeetingLinkLocator: this is a special locator comprised of a Teams meeting link
+   * {meetingLink: ...}
+   */
+  locator: TeamsMeetingLinkLocator | CallAndChatLocator;
+
+  // Props to customize the CallWithChatComposite experience
+  fluentTheme?: PartialTheme | Theme;
+  compositeOptions?: CallWithChatCompositeOptions;
+  callInvitationURL?: string;
+  formFactor?: 'desktop' | 'mobile';
+};
+
+export const CallWithChatExperience = (props: CallWithChatExampleProps): JSX.Element => {
+  // Construct a credential for the user with the token retrieved from your server. This credential
+  // must be memoized to ensure useAzureCommunicationCallWithChatAdapter is not retriggered on every render pass.
+  const credential = useMemo(() => new AzureCommunicationTokenCredential(props.token), [props.token]);
+
+  // Create the adapter using a custom react hook provided in the @azure/communication-react package.
+  // See https://aka.ms/acsstorybook?path=/docs/composite-adapters--page for more information on adapter construction and alternative constructors.
+  const adapter = useAzureCommunicationCallWithChatAdapter({
+    userId: props.userId,
+    displayName: props.displayName,
+    credential,
+    locator: props.locator,
+    endpoint: props.endpointUrl
+  });
+
+  // The adapter is created asynchronously by the useAzureCommunicationCallWithChatAdapter hook.
+  // Here we show a spinner until the adapter has finished constructing.
+  if (!adapter) {
+    return <Spinner label="Initializing..." />;
+  }
+
+  return (
+    <CallWithChatComposite
+      adapter={adapter}
+      fluentTheme={props.fluentTheme}
+      formFactor={props.formFactor}
+      joinInvitationURL={props.callInvitationURL}
+      options={props.compositeOptions}
+    />
+  );
+};
+
+export type ContainerProps = {
+  userId: CommunicationUserIdentifier;
+  token: string;
+  locator: string;
+  displayName: string;
+  avatarInitials: string;
+  callInvitationURL?: string;
+  formFactor?: 'desktop' | 'mobile';
+  fluentTheme?: PartialTheme | Theme;
+  locale?: CompositeLocale;
+  options?: CallCompositeOptions;
+};
+
+export const CustomDataModelExampleContainer = (props: ContainerProps): JSX.Element => {
+  const credential = useMemo(() => new AzureCommunicationTokenCredential(props.token), [props.token]);
+  const locator = useMemo(
+    () => (isTeamsMeetingLink(props.locator) ? { meetingLink: props.locator } : { groupId: props.locator }),
+    [props.locator]
+  );
+  const adapter = useAzureCommunicationCallAdapter(
+    {
+      userId: props.userId,
+      displayName: props.displayName,
+      credential,
+      locator
+    },
+    undefined,
+    async (adapter: CallAdapter): Promise<void> => {
+      await adapter.leaveCall().catch((e) => {
+        console.error('Failed to leave call', e);
+      });
+    }
+  );
+
+  // Data model injection: Contoso provides custom initials for the user avatar.
+  //
+  // Note: Call Composite doesn't implement a memoization mechanism for this callback.
+  // It is recommended that Contoso memoize the `onFetchAvatarPersonaData` callback
+  // to avoid costly re-fetching of data.
+  // A 3rd Party utility such as Lodash (_.memoize) can be used to memoize the callback.
+  const onFetchAvatarPersonaData = async (/* userId: string */): Promise<AvatarPersonaData> => ({
+    text: props.avatarInitials ? props.avatarInitials : props.displayName
+  });
+
+  // Custom Menu Item Callback for Participant List
+  const onFetchParticipantMenuItems: ParticipantMenuItemsCallback = (participantId, userId, defaultMenuItems) => {
+    let customMenuItems: IContextualMenuItem[] = [
+      {
+        key: 'Custom Menu Item',
+        text: 'Custom Menu Item',
+        onClick: () => console.log('Custom Menu Item Clicked')
+      }
+    ];
+    if (defaultMenuItems) {
+      customMenuItems = customMenuItems.concat(defaultMenuItems);
+    }
+    return customMenuItems;
+  };
+
+  return (
+    <div style={{ height: '100vh', width: '100vw' }}>
+      {adapter && (
+        <CallComposite
+          fluentTheme={props.fluentTheme}
+          adapter={adapter}
+          onFetchAvatarPersonaData={onFetchAvatarPersonaData}
+          onFetchParticipantMenuItems={onFetchParticipantMenuItems}
+          callInvitationUrl={props?.callInvitationURL}
+          locale={props?.locale}
+          formFactor={props?.formFactor}
+          options={props?.options}
+        />
+      )}
+    </div>
+  );
+};
+
 
 
 /**
  * Entry point of your application.
  */
+
+
 
 function App(): JSX.Element {
   // If you don't want to provide custom icons, you can register the default ones included with the library.
