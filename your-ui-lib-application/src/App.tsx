@@ -25,7 +25,8 @@ import { ChatComponents } from './ChatComponents';
 import { VideoGallery } from '@azure/communication-react';
 import { DEFAULT_COMPONENT_ICONS } from '@azure/communication-react';
 import { VideoTile } from '@azure/communication-react';
-import { GridLayout, } from '@azure/communication-react';
+import { GridLayout } from '@azure/communication-react';
+import { darkTheme } from '@azure/communication-react';
 import { ControlBar } from '@azure/communication-react';
 import { ControlBarButton } from '@azure/communication-react';
 import { DevicesButton } from '@azure/communication-react';
@@ -43,6 +44,10 @@ import { GroupCallLocator } from '@azure/communication-calling';
 import { ChatParticipant } from '@azure/communication-chat';
 import { v1 as createGUID } from 'uuid';
 import { TeamsMeetingLinkLocator } from '@azure/communication-calling';
+import { ParticipantItem, ParticipantItemProps } from '@azure/communication-react';
+import { PersonaPresence } from '@fluentui/react';
+import { Persona, PersonaSize } from '@fluentui/react';
+
 import {
   CallAndChatLocator,
   CallWithChatComposite,
@@ -62,7 +67,9 @@ import {
   ParticipantMenuItemsCallback,
   } from '@azure/communication-react';
   import { IContextualMenuItem, } from '@fluentui/react';
-  
+import { MessageStatus, MessageStatusIndicator } from '@azure/communication-react';
+
+ 
 
 /**
  * Authentication information needed for your client application to use
@@ -509,6 +516,53 @@ export const CustomDataModelExampleContainer = (props: ContainerProps): JSX.Elem
   );
 };
 
+type CallAdapterExampleProps = {
+  userId: CommunicationUserIdentifier;
+  accessToken: string;
+  callLocator: CallAdapterLocator;
+  displayName: string;
+};
+
+export const CallAdapterExample = (props: CallAdapterExampleProps): JSX.Element => {
+  const credential = useMemo(() => new AzureCommunicationTokenCredential(props.accessToken), [props.accessToken]);
+  const adapter = useAzureCommunicationCallAdapter({
+    userId: props.userId,
+    displayName: props.displayName,
+    credential,
+    locator: props.callLocator
+  });
+  return (
+    <div style={{ height: '100vh', width: '100vw' }}>
+      {adapter ? <CallComposite adapter={adapter} /> : <>Initializing</>}
+    </div>
+  );
+};
+
+type ChatAdapterExampleProps = {
+  userId: CommunicationUserIdentifier;
+  accessToken: string;
+  endpointUrl: string;
+  threadId: string;
+  displayName: string;
+};
+
+export const ChatAdapterExample = (props: ChatAdapterExampleProps): JSX.Element => {
+  const credential = useMemo(() => new AzureCommunicationTokenCredential(props.accessToken), [props.accessToken]);
+  const adapter = useAzureCommunicationChatAdapter({
+    endpoint: props.endpointUrl,
+    userId: props.userId,
+    displayName: props.displayName,
+    credential,
+    threadId: props.threadId
+  });
+  return (
+    <div style={{ height: '100vh', width: '100vw' }}>
+      {adapter ? <ChatComposite adapter={adapter} /> : <>Initializing </>}
+    </div>
+  );
+};
+
+
 
 
 /**
@@ -671,5 +725,88 @@ function useAzureCommunicationServiceArgs(): {
       };
       
 }
+
+export const DefaultMessageStatusIndicatorsExample: () => JSX.Element = () => {
+  return (
+    <Stack horizontalAlign="start">
+      <MessageStatusIndicator status={'delivered' as MessageStatus} />
+      <MessageStatusIndicator status={'seen' as MessageStatus} />
+      <MessageStatusIndicator status={'sending' as MessageStatus} />
+      <MessageStatusIndicator status={'failed' as MessageStatus} />
+    </Stack>
+  );
+};
+
+export const ParticipantItemExample: () => JSX.Element = () => {
+  const menuItems: IContextualMenuItem[] = [
+    {
+      key: 'Mute',
+      text: 'Mute',
+      onClick: () => alert('Mute')
+    },
+    {
+      key: 'Remove',
+      text: 'Remove',
+      onClick: () => alert('Remove')
+    }
+  ];
+
+  return <ParticipantItem displayName="Johnny Bravo" menuItems={menuItems} presence={PersonaPresence.online} />;
+};
+
+export const DefaultThemeSnippet = (): JSX.Element => {
+  return (
+    <ControlBar>
+      <CameraButton />
+      <MicrophoneButton />
+      <ScreenShareButton />
+      <EndCallButton />
+    </ControlBar>
+  );
+};
+
+export const DarkControlBar = (): JSX.Element => {
+  return (
+    <FluentThemeProvider fluentTheme={darkTheme}>
+      <ControlBar>
+        <CameraButton />
+        <MicrophoneButton />
+        <ScreenShareButton />
+        <DevicesButton />
+        <EndCallButton />
+      </ControlBar>
+    </FluentThemeProvider>
+  );
+};
+
+export const lightTheme = {
+  palette: {
+    themePrimary: '#0078d4',
+    themeLighterAlt: '#eff6fc',
+    themeLighter: '#deecf9',
+    themeLight: '#c7e0f4',
+    themeTertiary: '#71afe5',
+    themeSecondary: '#2b88d8',
+    themeDarkAlt: '#106ebe',
+    themeDark: '#005a9e',
+    themeDarker: '#004578',
+    neutralLighterAlt: '#faf9f8',
+    neutralLighter: '#f3f2f1',
+    neutralLight: '#edebe9',
+    neutralQuaternaryAlt: '#e1dfdd',
+    neutralQuaternary: '#d0d0d0',
+    neutralTertiaryAlt: '#c8c6c4',
+    neutralTertiary: '#a19f9d',
+    neutralSecondary: '#605e5c',
+    neutralSecondaryAlt: '#8a8886',
+    neutralPrimaryAlt: '#3b3a39',
+    neutralPrimary: '#323130',
+    neutralDark: '#201f1e',
+    black: '#000000',
+    white: '#ffffff',
+  }
+};
+
+
 
 export default App;
