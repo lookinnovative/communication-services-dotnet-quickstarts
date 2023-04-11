@@ -17,7 +17,8 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import { v4 as uuidv4 } from 'uuid';
+
+import { v4 as uuidv4 } from 'uuid'; 
 import { ChatClient } from '@azure/communication-chat';
 import { initializeIcons, registerIcons, Stack } from '@fluentui/react';
 import { CallingComponents } from './CallingComponents';
@@ -113,8 +114,8 @@ export const ControlBarExample = (): JSX.Element => {
  * application after the user goes through your authentication flow.
  */
 const ENDPOINT_URL = 'https://verizann-media.communication.azure.com';
-const USER_ID = '8:acs:529c7b72-7c34-4ddb-9e78-1318bebc1e4d_00000017-6ce4-ce25-9806-113a0d001538';
-const TOKEN = 'eyJhbGciOiJSUzI1NiIsImtpZCI6IjEwNiIsIng1dCI6Im9QMWFxQnlfR3hZU3pSaXhuQ25zdE5PU2p2cyIsInR5cCI6IkpXVCJ9.eyJza3lwZWlkIjoiYWNzOjUyOWM3YjcyLTdjMzQtNGRkYi05ZTc4LTEzMThiZWJjMWU0ZF8wMDAwMDAxNy02Y2U0LWNlMjUtOTgwNi0xMTNhMGQwMDE1MzgiLCJzY3AiOjE3OTIsImNzaSI6IjE2Nzg0NzY3ODIiLCJleHAiOjE2Nzg1NjMxODIsInJnbiI6ImFtZXIiLCJhY3NTY29wZSI6ImNoYXQsdm9pcCIsInJlc291cmNlSWQiOiI1MjljN2I3Mi03YzM0LTRkZGItOWU3OC0xMzE4YmViYzFlNGQiLCJyZXNvdXJjZUxvY2F0aW9uIjoidW5pdGVkc3RhdGVzIiwiaWF0IjoxNjc4NDc2NzgyfQ.Uudrr2J6XrxRkTCgTasnmSWYoAcaUg7dE_IXyJVDDer0mLDYB9XK-Dg3-HMi9TjSzMJEdeEfHJnwQog2EUmPioJ2xJ5sgybALWpCmgaVVeqaZcLo7oXm0pSPxntSKyvgxUFzsAEn7lfuaxx0hr9qFibjfmZTQABKldXxe9mlUgemCf8TyM7PA9iJiUEkXbsl6nJs8TM2XSGgn7KHdoKE-kNaKo5tfV_IUUbszuk4NgMkChFFdc1RPBVHvtROWeaxhy5AHRjxWfcjAcDceuntGbjgsWiK6dkaVPsA3QD4aRBDTee3eWMjkR45XEFTTJ9nu8s00I9mz07DtQG9Ck40hg';
+const USER_ID = '8:acs:529c7b72-7c34-4ddb-9e78-1318bebc1e4d_00000018-10c5-c231-df68-563a0d00966e';
+const TOKEN = 'eyJhbGciOiJSUzI1NiIsImtpZCI6IjEwNiIsIng1dCI6Im9QMWFxQnlfR3hZU3pSaXhuQ25zdE5PU2p2cyIsInR5cCI6IkpXVCJ9.eyJza3lwZWlkIjoiYWNzOjUyOWM3YjcyLTdjMzQtNGRkYi05ZTc4LTEzMThiZWJjMWU0ZF8wMDAwMDAxOC0xMGM1LWMyMzEtZGY2OC01NjNhMGQwMDk2NmUiLCJzY3AiOjE3OTIsImNzaSI6IjE2ODEyMjYyMTAiLCJleHAiOjE2ODEzMTI2MTAsInJnbiI6ImFtZXIiLCJhY3NTY29wZSI6ImNoYXQsdm9pcCIsInJlc291cmNlSWQiOiI1MjljN2I3Mi03YzM0LTRkZGItOWU3OC0xMzE4YmViYzFlNGQiLCJyZXNvdXJjZUxvY2F0aW9uIjoidW5pdGVkc3RhdGVzIiwiaWF0IjoxNjgxMjI2MjEwfQ.k7aWNNSCoym5BTMcH-JzC9LQgjeq3tgjJxfjoOWYUS74cVLhMU0hOx5c46fm3OJSpAI6tyxJu-pdaMSzGspys4dafkeTkkBeJlWMgIsmaKT3cQqrcHw6L3yk11Std2mtNRZDrvFuFPXb7BddgAOJAz_idBeNkDUCDYKamIbSD0KsOLlqRYFLS1lHUG0tsioqiCiRq2pOnboPcYkwpjjbUqsSmx7y09drWYIOdt0PzZpW6HSGkrbGgmhDWPha7kCiaFuxxSz5iz0V9qtf0aJyl4X-UwonWW8LOuxXT5uVkfUwCf1k_8-2Ymm8dJoJ-OkLKbKonX9co8QFndXv0HXYZQ';
 
 /**
  * Display name for the local participant.
@@ -123,6 +124,8 @@ const TOKEN = 'eyJhbGciOiJSUzI1NiIsImtpZCI6IjEwNiIsIng1dCI6Im9QMWFxQnlfR3hZU3pSa
  * goes through your authentication flow.
  */
 const DISPLAY_NAME = '<Display Name>';
+
+
 
 initializeIcons();
 
