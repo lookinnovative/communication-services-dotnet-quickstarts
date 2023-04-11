@@ -37,6 +37,7 @@ import { CallParticipantListParticipant, } from '@azure/communication-react';
 import { IContextualMenuProps } from '@fluentui/react';
 import { CameraButton } from '@azure/communication-react';
 import { ScreenShareButton } from '@azure/communication-react';
+import { SendBox } from '@azure/communication-react';
 import { Airplane20Filled, VehicleShip20Filled } from '@fluentui/react-icons';
 import { MessageThread } from '@azure/communication-react';
 import { GetHistoryChatMessages } from './placeholdermessages';
@@ -47,6 +48,8 @@ import { TeamsMeetingLinkLocator } from '@azure/communication-calling';
 import { ParticipantItem, ParticipantItemProps } from '@azure/communication-react';
 import { PersonaPresence } from '@fluentui/react';
 import { Persona, PersonaSize } from '@fluentui/react';
+import { createTheme } from '@fluentui/react';
+import { TypingIndicator } from '@azure/communication-react';
 
 import {
   CallAndChatLocator,
@@ -69,6 +72,34 @@ import {
   import { IContextualMenuItem, } from '@fluentui/react';
 import { MessageStatus, MessageStatusIndicator } from '@azure/communication-react';
 
+// ControlBar component accepts a `styles` prop with only the `root` key as a valid property.
+const styles = {
+  root: {
+    background: 'white',
+    border: '2px solid firebrick',
+    '& button': {
+      ':hover': {
+        background: 'black',
+        color: 'white'
+      }
+    }
+  }
+};
+
+export const ControlBarExample = (): JSX.Element => {
+  return (
+    <FluentThemeProvider>
+      <ControlBar styles={styles}>
+        <CameraButton />
+        <MicrophoneButton />
+        <EndCallButton />
+      </ControlBar>
+    </FluentThemeProvider>
+  );
+};
+
+
+
  
 
 /**
@@ -82,8 +113,8 @@ import { MessageStatus, MessageStatusIndicator } from '@azure/communication-reac
  * application after the user goes through your authentication flow.
  */
 const ENDPOINT_URL = 'https://verizann-media.communication.azure.com';
-const USER_ID = '8:acs:529c7b72-7c34-4ddb-9e78-1318bebc1e4d_00000017-2915-0727-bc66-563a0d005ef2';
-const TOKEN = 'eyJhbGciOiJSUzI1NiIsImtpZCI6IjEwNiIsIng1dCI6Im9QMWFxQnlfR3hZU3pSaXhuQ25zdE5PU2p2cyIsInR5cCI6IkpXVCJ9.eyJza3lwZWlkIjoiYWNzOjUyOWM3YjcyLTdjMzQtNGRkYi05ZTc4LTEzMThiZWJjMWU0ZF8wMDAwMDAxNy0yOTE1LTA3MjctYmM2Ni01NjNhMGQwMDVlZjIiLCJzY3AiOjE3OTIsImNzaSI6IjE2NzczMzkwOTEiLCJleHAiOjE2Nzc0MjU0OTEsInJnbiI6ImFtZXIiLCJhY3NTY29wZSI6ImNoYXQsdm9pcCIsInJlc291cmNlSWQiOiI1MjljN2I3Mi03YzM0LTRkZGItOWU3OC0xMzE4YmViYzFlNGQiLCJyZXNvdXJjZUxvY2F0aW9uIjoidW5pdGVkc3RhdGVzIiwiaWF0IjoxNjc3MzM5MDkxfQ.A3FqCYHBCategk2RJSsVnwWd1UYJx9GoHzSL0NUvEUNr6mvfOZRNJvWyW2c-MKeMlQKg03iq1_TMcR-YYzjdSGbaXxETVlwX-uILh3yTGKWyRQxlvGf8fHcdVK05cOjtIVXiTMM1sih7rFRLE_sOG3CrJWzq7kjhGvx1CkzO3k_9hL_r2aR2cXXXS-J_-YOaCIntFMt82HjI0Nu8_sPRKnkmGh_FzWYkEooXo1Zo36F2tDAtr5yQ9wvQaenWggko7Omz7-OI_qGZKgtp1ZXtiTOEdk00i_N33LgbpBWZW0z1tBrQ7Jj-WztssQRDmryHJabsLTlS-ri79po9WkYuAQ';
+const USER_ID = '8:acs:529c7b72-7c34-4ddb-9e78-1318bebc1e4d_00000017-6ce4-ce25-9806-113a0d001538';
+const TOKEN = 'eyJhbGciOiJSUzI1NiIsImtpZCI6IjEwNiIsIng1dCI6Im9QMWFxQnlfR3hZU3pSaXhuQ25zdE5PU2p2cyIsInR5cCI6IkpXVCJ9.eyJza3lwZWlkIjoiYWNzOjUyOWM3YjcyLTdjMzQtNGRkYi05ZTc4LTEzMThiZWJjMWU0ZF8wMDAwMDAxNy02Y2U0LWNlMjUtOTgwNi0xMTNhMGQwMDE1MzgiLCJzY3AiOjE3OTIsImNzaSI6IjE2Nzg0NzY3ODIiLCJleHAiOjE2Nzg1NjMxODIsInJnbiI6ImFtZXIiLCJhY3NTY29wZSI6ImNoYXQsdm9pcCIsInJlc291cmNlSWQiOiI1MjljN2I3Mi03YzM0LTRkZGItOWU3OC0xMzE4YmViYzFlNGQiLCJyZXNvdXJjZUxvY2F0aW9uIjoidW5pdGVkc3RhdGVzIiwiaWF0IjoxNjc4NDc2NzgyfQ.Uudrr2J6XrxRkTCgTasnmSWYoAcaUg7dE_IXyJVDDer0mLDYB9XK-Dg3-HMi9TjSzMJEdeEfHJnwQog2EUmPioJ2xJ5sgybALWpCmgaVVeqaZcLo7oXm0pSPxntSKyvgxUFzsAEn7lfuaxx0hr9qFibjfmZTQABKldXxe9mlUgemCf8TyM7PA9iJiUEkXbsl6nJs8TM2XSGgn7KHdoKE-kNaKo5tfV_IUUbszuk4NgMkChFFdc1RPBVHvtROWeaxhy5AHRjxWfcjAcDceuntGbjgsWiK6dkaVPsA3QD4aRBDTee3eWMjkR45XEFTTJ9nu8s00I9mz07DtQG9Ck40hg';
 
 /**
  * Display name for the local participant.
@@ -562,6 +593,21 @@ export const ChatAdapterExample = (props: ChatAdapterExampleProps): JSX.Element 
   );
 };
 
+export const SendBoxExample: () => JSX.Element = () => (
+  <FluentThemeProvider>
+    <div style={{ width: '31.25rem' }}>
+      <SendBox
+        onSendMessage={async () => {
+          return;
+        }}
+        onTyping={async () => {
+          return;
+        }}
+      />
+    </div>
+  </FluentThemeProvider>
+);
+
 
 
 
@@ -754,16 +800,7 @@ export const ParticipantItemExample: () => JSX.Element = () => {
   return <ParticipantItem displayName="Johnny Bravo" menuItems={menuItems} presence={PersonaPresence.online} />;
 };
 
-export const DefaultThemeSnippet = (): JSX.Element => {
-  return (
-    <ControlBar>
-      <CameraButton />
-      <MicrophoneButton />
-      <ScreenShareButton />
-      <EndCallButton />
-    </ControlBar>
-  );
-};
+
 
 export const DarkControlBar = (): JSX.Element => {
   return (
@@ -779,7 +816,9 @@ export const DarkControlBar = (): JSX.Element => {
   );
 };
 
-export const lightTheme = {
+
+
+const myTheme = createTheme({
   palette: {
     themePrimary: '#0078d4',
     themeLighterAlt: '#eff6fc',
@@ -805,7 +844,7 @@ export const lightTheme = {
     black: '#000000',
     white: '#ffffff',
   }
-};
+})
 
 
 
